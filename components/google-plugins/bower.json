@@ -1,0 +1,19 @@
+{
+  "name": "google-plugins",
+  "version": "0.0.1",
+  "authors": [
+    "Gerwin Sturm <scarygami@gmail.com>"
+  ],
+  "description": "Various Google JS plugins/widgets.",
+  "keywords": "polymer, web-components, gapi",
+  "main": "seed-element.html",
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/Scarygami/google-plugins/",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "google-apis": "GoogleWebComponents/google-apis#master"
+  }
+}

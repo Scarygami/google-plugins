@@ -1,0 +1,28 @@
+{
+  "name": "google-plugins",
+  "authors": [
+    "Gerwin Sturm <scarygami@gmail.com>"
+  ],
+  "description": "Various Google JS plugins/widgets.",
+  "keywords": "polymer, web-components, gapi",
+  "main": "seed-element.html",
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/Scarygami/google-plugins/",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "google-apis": "GoogleWebComponents/google-apis#master"
+  },
+  "_release": "3a145a8866",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "3a145a88667c285c172ae8a4961e97e24b476f08"
+  },
+  "_source": "git://github.com/Scarygami/google-plugins.git",
+  "_target": "master",
+  "_originalSource": "Scarygami/google-plugins",
+  "_direct": true
+}

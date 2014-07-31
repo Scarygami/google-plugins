@@ -1,0 +1,7 @@
+{
+  "name": "google-plugins#gh-pages",
+  "private": true,
+  "dependencies": {
+    "google-plugins": "Scarygami/google-plugins#master"
+  }
+}

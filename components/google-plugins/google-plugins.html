@@ -1,0 +1,178 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-apis/google-apis.html">
+
+<!--
+Generic google-plugin that uses gapi to render plugins with the specified `type` and `data`
+
+##### Example
+
+    <google-plugin type="plusone"></google-plugin>
+
+@element google-plugin
+@blurb Generic google-plugin
+@status alpha
+@homepage http://scarygami.github.io/google-plugins
+-->
+<polymer-element name="google-plugin" attributes="type data">
+  <template>
+    <style>
+      :host, span {
+        display: inline-block;
+      }
+    </style>
+    <google-plusone-api id="plusone" on-api-load="{{load}}"></google-plusone-api>
+    <span id="container"></span>
+  </template>
+
+  <script>
+    Polymer('google-plugin', {
+      /**
+       * Specifies what type of plugin to display.
+       *
+       * @attribute type
+       * @type string
+       * @required
+       */
+
+      /**
+       * Specifies the extra data to supply for rendering the plugin.
+       *
+       * @attribute data
+       * @type object
+       */
+      data: null,
+
+      loaded: false,
+      load: function() {
+        if (!this.type || !this.$.plusone.api[this.type]) {
+          throw 'Invalid plugin type.';
+        }
+        if (typeof this.data == 'string') {
+          try {
+            this.data = JSON.parse(this.data);
+          } catch (e) {
+            throw 'Error parsing data.';
+          }
+        }
+        var container = this.pregame();
+        this.$.plusone.api[this.type].render(container, this.data);
+        this.postgame(container);
+      },
+      pregame: function() {
+        var object = document.createElement('span');
+        document.body.appendChild(object);
+        return object;
+      },
+      postgame: function(object) {
+        // when the iframe finishes it's dirty business, snarf it into the shadow-root
+        var iframe = object.firstElementChild;
+        iframe.addEventListener('load', function() {
+          if (!this.loaded) {
+            //  appending directly to shadowRoot not working under polyfill
+            //this.shadowRoot.appendChild(object);
+            this.$.container.appendChild(object);
+            this.loaded = true;
+          }
+        }.bind(this));
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--
+Displays a +1 button.
+
+Please refer to the [official docs](https://developers.google.com/+/web/+1button/#tag_parameters)
+for explanation of the attributes and their default values.
+
+##### Example
+
+    <google-plusone-button></google-plusone-button>
+
+@element google-plusone-button
+@blurb Displays a +1 button.
+@status alpha
+@homepage http://scarygami.github.io/google-plugins
+-->
+<polymer-element name="google-plusone-button"
+                 attributes="size href annotation width align expandTo callback onStartInteraction onEndInteraction">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+    </style>
+    <google-plugin type="plusone" data="{{data}}"></google-plugin>
+  </template>
+
+  <script>
+    Polymer('google-plusone-button', {
+      ready: function () {
+        this.data = {
+          'href': this.href,
+          'size': this.size,
+          'annotation': this.annotation,
+          'width': this.width,
+          'align': this.align,
+          'expandTo': this.expandTo,
+          'callback': this.callback,
+          'onstartinteraction': this.onStartInteraction,
+          'onendinteraction': this.onEndInteraction
+        };
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--
+Displays a badge for a Google+ Profile.
+
+Please refer to the [official docs](https://developers.google.com/+/web/badge/#person-tag-attributes)
+for explanation of the attributes and their default values.
+
+Extra attributes used by this element described below.
+
+##### Example
+
+    <google-profile-badge></google-profile-badge>
+
+@element google-profile-badge
+@blurb Displays a Google+ Profile badge.
+@status alpha
+@homepage http://scarygami.github.io/google-plugins
+-->
+<polymer-element name="google-profile-badge"
+                 attributes="profile layout showCoverPhoto showTagLine theme width">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+    </style>
+    <google-plugin type="person" data="{{data}}"><content></content></google-plugin>
+  </template>
+
+  <script>
+    Polymer('google-profile-badge', {
+
+      /**
+       * Google+ ID of the profile to be displayed.
+       *
+       * @attribute profile
+       * @type string
+       * @required
+       */
+
+      ready: function () {
+        this.data = {
+          'href': 'https://plus.google.com/' + this.profile,
+          'layout': this.layout,
+          'showcoverphoto': this.showCoverPhoto,
+          'showtagline': this.showTagLine,
+          'theme': this.theme,
+          'width': this.width
+        };
+      }
+    });
+  </script>
+</polymer-element>
